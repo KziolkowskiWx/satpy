@@ -1,0 +1,9 @@
+enhancements:
+  wind_speed_kts_raw:
+    name: wind_speed_kts_raw
+    operations:
+      - name: colorize
+        method: !!python/name:satpy.enhancements.colorize
+        kwargs:
+          palettes:
+            - {colors: ylorrd, min_value: 0, max_value: 200}

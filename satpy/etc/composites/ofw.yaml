@@ -1,0 +1,7 @@
+sensor_name: visir/ofw
+composites:
+  wind_speed_kts_raw:
+    compositor: !!python/name:satpy.composites.GenericCompositor
+    standard_name: wind_speed_kts_raw
+    prerequisites:
+      - wspd_kts
