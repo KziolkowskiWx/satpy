@@ -6,7 +6,7 @@ reader:
     NetCDF4 reader for Dense Optical Flow Wind data from the OCTANE Software --> https://github.com/JasonApke/OCTANE
   status: Beta
   supports_fsspec: false
-  sensors: [abi]
+  sensors: [ofw]
   reader: !!python/name:satpy.readers.yaml_reader.FileYAMLReader
   # file pattern keys to sort files by with 'satpy.utils.group_files'
   group_keys: ['start_time', 'platform_shortname', 'scene_abbr']
@@ -16,7 +16,7 @@ reader:
 file_types:
 #Will likely have to add this for every channel 1-16
   ofw_l2_c02_imagery:
-    file_reader: !!python/name:satpy.readers.ofw_l2.NCOFWL2 
+    file_reader: !!python/name:satpy.readers.ofw_l2.NC_OFW_L2 
     file_patterns: ['{system_environment:2s}_{mission_id:3s}-OFW-L2-{observation_type:3s}{scene_abbr:s}-{scan_mode:2s}C02_{platform_shortname:3s}_s{start_time:%Y%j%H%M%S%f}_e{end_time:%Y%j%H%M%S%f}_c{creation_time:%Y%j%H%M%S%f}.nc{nc_version}']
                     # '{system_environment:s}_{mission_id:3s}-L2-GLM{scene_abbr:s}-{scan_mode:2s}_{platform_shortname:3s}_s{start_time:%Y%j%H%M%S%f}_e{end_time:%Y%j%H%M%S%f}_c{creation_time:%Y%j%H%M%S%f}.nc']
 
@@ -48,27 +48,3 @@ datasets:
     resolution: 500
     units: degrees
     file_type: ofw_l2_c02_imagery
-  # flash_extent_density:
-  #   name: flash_extent_density
-  #   file_type: glm_l2_imagery
-  # group_extent_density:
-  #   name: group_extent_density
-  #   file_type: glm_l2_imagery
-  # flash_centroid_density:
-  #   name: flash_centroid_density
-  #   file_type: glm_l2_imagery
-  # group_centroid_density:
-  #   name: group_centroid_density
-  #   file_type: glm_l2_imagery
-  # average_flash_area:
-  #   name: average_flash_area
-  #   file_type: glm_l2_imagery
-  # minimum_flash_area:
-  #   name: minimum_flash_area
-  #   file_type: glm_l2_imagery
-  # average_group_area:
-  #   name: average_group_area
-  #   file_type: glm_l2_imagery
-  # total_energy:
-  #   name: total_energy
-  #   file_type: glm_l2_imagery

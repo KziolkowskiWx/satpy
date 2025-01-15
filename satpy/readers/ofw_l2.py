@@ -18,7 +18,7 @@
 
 """Optical Flow Wind custom reader for handling post-processed output files produced by the OCTANE software.
 
-OCTANE does the dense optical flow calculations and then those output files are processed again where wind speed, and wind direction are calculated. 
+OCTANE handles the dense optical flow calculations and then those output files are processed again where wind speed, and wind direction are calculated. 
 
 More information on OCTANE can be found here --> https://github.com/JasonApke/OCTANE
 
@@ -43,13 +43,13 @@ PLATFORM_NAMES = {
 # class NC_GLM_L2_LCFA(BaseFileHandler): — add this with glmtools
 
 
-class NCOFWL2(NC_ABI_BASE):
+class NC_OFW_L2(NC_ABI_BASE):
     """File reader for individual OFW L2 NetCDF4 files."""
 
-    @property
-    def sensor(self):
-        """Get sensor name for current file handler."""
-        return "abi"
+    # @property
+    # def sensor(self):
+    #     """Get sensor name for current file handler."""
+    #     return "ofw"
 
     # @property
     # def start_time(self):
@@ -81,28 +81,28 @@ class NCOFWL2(NC_ABI_BASE):
         res.attrs.update(self.filename_info)
 
     #Not sure If I need the stuff below?
-        # # Add orbital parameters
-        # projection = self.nc["goes_imager_projection"]
-        # res.attrs["orbital_parameters"] = {
-        #     "projection_longitude": float(projection.attrs["longitude_of_projection_origin"]),
-        #     "projection_latitude": float(projection.attrs["latitude_of_projection_origin"]),
-        #     "projection_altitude": float(projection.attrs["perspective_point_height"]),
-        #     "satellite_nominal_latitude": float(self["nominal_satellite_subpoint_lat"]),
-        #     "satellite_nominal_longitude": float(self["nominal_satellite_subpoint_lon"]),
-        #     # 'satellite_nominal_altitude': float(self['nominal_satellite_height']),
-        # }
+        # Add orbital parameters
+        projection = self.nc["goes_imager_projection"]
+        res.attrs["orbital_parameters"] = {
+            "projection_longitude": float(projection.attrs["longitude_of_projection_origin"]),
+            "projection_latitude": float(projection.attrs["latitude_of_projection_origin"]),
+            "projection_altitude": float(projection.attrs["perspective_point_height"]),
+            # "satellite_nominal_latitude": float(self["nominal_satellite_subpoint_lat"]),
+            # "satellite_nominal_longitude": float(self["nominal_satellite_subpoint_lon"]),
+            # 'satellite_nominal_altitude': float(self['nominal_satellite_height']),
+        }
 
-        # res.attrs.update(key.to_dict())
+        res.attrs.update(key.to_dict())
 
-        # # remove attributes that could be confusing later
-        # if not self._is_category_product(res):
-        #     res.attrs.pop("_FillValue", None)
-        # res.attrs.pop("scale_factor", None)
-        # res.attrs.pop("add_offset", None)
-        # res.attrs.pop("_Unsigned", None)
-        # res.attrs.pop("ancillary_variables", None)  # Can't currently load DQF
-        # # add in information from the filename that may be useful to the user
-        # # for key in ('observation_type', 'scene_abbr', 'scan_mode', 'platform_shortname'):
+        # remove attributes that could be confusing later
+        if not self._is_category_product(res):
+            res.attrs.pop("_FillValue", None)
+        res.attrs.pop("scale_factor", None)
+        res.attrs.pop("add_offset", None)
+        res.attrs.pop("_Unsigned", None)
+        res.attrs.pop("ancillary_variables", None)  # Can't currently load DQF
+        # add in information from the filename that may be useful to the user
+        # for key in ('observation_type', 'scene_abbr', 'scan_mode', 'platform_shortname'):
         for attr in ("scene_abbr", "scan_mode", "platform_shortname"):
             res.attrs[attr] = self.filename_info[attr]
         # copy global attributes to metadata
